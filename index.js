@@ -36,10 +36,16 @@ function gerarFaturaStr (fatura, pecas) {
         return total;
       }
       let total = calcularTotalApresentacao(apre, getPeca(apre));
-      // créditos para próximas contratações
-      creditos += Math.max(apre.audiencia - 30, 0);
-      if (getPeca(apre).tipo === "comedia") 
-         creditos += Math.floor(apre.audiencia / 5);
+      // função extraída
+      function calcularCredito(apre) {
+        let creditos = 0;
+        creditos += Math.max(apre.audiencia - 30, 0);
+        if (getPeca(apre).tipo === "comedia") 
+          creditos += Math.floor(apre.audiencia / 5);
+        return creditos;   
+      }
+
+      creditos += calcularCredito(apre);
   
       // mais uma linha da fatura
       faturaStr += `  ${getPeca(apre).nome}: ${formato(total/100)} (${getPeca(apre).audiencia} assentos)\n`;
